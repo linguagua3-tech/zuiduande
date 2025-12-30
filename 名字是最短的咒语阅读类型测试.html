@@ -1,0 +1,524 @@
+<!DOCTYPE html><html><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><meta http-equiv="x-dns-prefetch-control" content="off"><script src="https://puc.poecdn.net/authenticated_preview_page/standard.3ef2c256959faf5a756d.js"></script>
+    <meta charset="utf-8">
+    <title>Poe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://puc.poecdn.net/authenticated_preview_page/disableWebRTC.9710cebe07429a9e8e06.js"></script><meta name="x-poe-allow-downloads" content="true"><meta name="x-poe-datastore-behavior" content="disabled"><script src="https://puc.poecdn.net/authenticated_preview_page/tw.b9024aecac666455e183.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/deps.faccd16000d314dc16d5.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/exports.b0f0f482cdeb5302b0b9.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/renderer.75c73ae6b4235f62945a.js"></script><script>Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+var _framermotion = require('framer-motion');
+
+
+
+
+
+
+
+
+
+
+
+
+var _lucidereact = require('lucide-react');
+
+// --- 视觉组件 ---
+
+const GlitchText = ({ text }) => {
+  return (
+    _react2.default.createElement('span', { className: "relative inline-block group font-mono"   ,}
+      , _react2.default.createElement('span', { className: "absolute top-0 left-0 -ml-[2px] text-red-600 opacity-50 animate-pulse"      ,}, text)
+      , _react2.default.createElement('span', { className: "absolute top-0 left-0 ml-[2px] text-cyan-600 opacity-50 animate-pulse delay-75"       ,}, text)
+      , _react2.default.createElement('span', { className: "relative z-10" ,}, text)
+    )
+  );
+};
+
+// --- 核心数据 ---
+
+const SCENARIOS = [
+  {
+    id: 'dreamcore',
+    type: '梦核景观',
+    icon: _react2.default.createElement(_lucidereact.Eye, { size: 18,} ),
+    question: '场景一：室内泳池',
+    description: '你发现自己在一个巨大的室内泳池边，周围全是白瓷砖，水面平静得像镜子，没有出口，光线不知从何而来。空气中弥漫着消毒水的味道。',
+    options: [
+      {
+        text: '我感到一种极致的孤独与宁静，想跳进水里永远不出来。',
+        score: { lit: 2, weird: 0, sanity: -10 },
+        log: '记录：受试者表现出对“回归母体”的渴望。'
+      },
+      {
+        text: '我警惕水下是否有东西在注视我，这里太干净了，不正常。',
+        score: { lit: 0, weird: 2, sanity: -5 },
+        log: '记录：受试者保持了生存本能与怀疑。'
+      },
+      {
+        text: '这肯定是做梦，快醒醒。',
+        score: { lit: 0, weird: 0, sanity: -20 },
+        log: '警告：受试者拒绝接受当前现实。'
+      }
+    ]
+  },
+  {
+    id: 'liminal_space',
+    type: '阈限空间',
+    icon: _react2.default.createElement(_lucidereact.ScanLine, { size: 18,} ),
+    question: '场景二：无尽走廊',
+    description: '你来到一个陌生的写字楼层，这里铺着黄色的旧地毯，日光灯发出嗡嗡声。走廊似乎被无限拉长了，所有的门都画在墙上，打不开。你感觉？',
+    options: [
+      {
+        text: '一种怀旧又不安的感觉，仿佛我在梦里来过这里很多次。',
+        score: { lit: 1, weird: 1, sanity: -5 },
+        log: '记录：受试者与阈限空间产生情感链接。'
+      },
+      {
+        text: '我开始寻找墙纸接缝处的破绽，这一定是个“纸上密室”。',
+        score: { lit: 0, weird: 2, sanity: -5 },
+        log: '记录：受试者试图解构场景物理属性。'
+      },
+      {
+        text: '大声呼救，寻找保安。',
+        score: { lit: 0, weird: 0, sanity: -40 },
+        log: '警告：受试者试图用常识对抗超常。'
+      }
+    ]
+  },
+  {
+    id: 'uncanny_ad',
+    type: '都市怪谈',
+    icon: _react2.default.createElement(_lucidereact.MonitorPlay, { size: 18,} ),
+    question: '场景三：隧道里的笑脸',
+    description: '地铁飞驰在黑暗隧道中，窗外的电子广告牌连续闪烁。突然，你发现其中一张广告上是一张微微变形的人脸，五官位置不对称地扭曲着，正对着车厢内的你露出僵硬的微笑。',
+    options: [
+      {
+        text: '我认为这是某种讽刺现代人虚假快乐的先锋艺术，虽然不适，但很有冲击力。',
+        score: { lit: 2, weird: 0, sanity: -5 },
+        log: '记录：受试者试图用审美理论合理化恐惧。'
+      },
+      {
+        text: '我贴紧玻璃，试图看清它嘴角的弧度，并期待下一次闪烁时它是否会眨眼。',
+        score: { lit: 0, weird: 2, sanity: -10 },
+        log: '记录：受试者表现出危险的好奇心与凝视欲。'
+      },
+      {
+        text: '立刻背过身去，低头看手机。那个笑容让我反胃。',
+        score: { lit: 0, weird: 0, sanity: -30 },
+        log: '警告：视觉污染已造成精神回避反应。'
+      }
+    ]
+  },
+  {
+    id: 'memetics',
+    type: '模因危害',
+    icon: _react2.default.createElement(_lucidereact.Terminal, { size: 18,} ),
+    question: '场景四：病毒文本',
+    description: '你在书页的角落看到一行极小的字：“不要在脑中朗读这句话，否则它会寄生。” 但你已经看完了。',
+    options: [
+      {
+        text: '我立刻在脑中用其他无关的思绪（如唱歌）来冲刷掉这句话。',
+        score: { lit: 0, weird: 2, sanity: 0 },
+        log: '记录：受试者具备基础的精神防御机制。'
+      },
+      {
+        text: '我思考这句话的语言结构如何构成了“强制性阅读”的悖论。',
+        score: { lit: 2, weird: 0, sanity: -5 },
+        log: '记录：受试者将模因威胁转化为语言学思考。'
+      },
+      {
+        text: '我觉得这只是作者在故弄玄虚。',
+        score: { lit: 0, weird: 0, sanity: -20 },
+        log: '警告：傲慢是最大的精神漏洞。'
+      }
+    ]
+  },
+  {
+    id: 'mockumentary',
+    type: '伪纪录',
+    icon: _react2.default.createElement(_lucidereact.Ghost, { size: 18,} ),
+    question: '场景五：遗失的录像带',
+    description: '你捡到一盘录像带，画面剧烈抖动。拍摄者在漆黑的楼道里狂奔，喘息着说：“它根本不是人……” 画面在这一刻戛然而止。',
+    options: [
+      {
+        text: '我开始分析这种“手持摄影”手法对真实感的构建作用。',
+        score: { lit: 2, weird: 0, sanity: 0 },
+        log: '记录：受试者保持了审视艺术形式的距离。'
+      },
+      {
+        text: '我反复倒放最后一秒，试图看清黑暗中那个影子的轮廓。',
+        score: { lit: 0, weird: 2, sanity: -10 },
+        log: '记录：受试者已陷入叙事陷阱。'
+      },
+      {
+        text: '假的，演员演得太浮夸。',
+        score: { lit: 0, weird: 0, sanity: -30 },
+        log: '警告：共情模块离线。'
+      }
+    ]
+  },
+  {
+    id: 'meta',
+    type: '元叙事',
+    icon: _react2.default.createElement(_lucidereact.BookOpen, { size: 18,} ),
+    question: '场景六：最终测试',
+    description: '如果这本书的作者告诉你，你其实不是读者，而是书中一个以为自己在读书的角色。你的第一反应是？',
+    options: [
+      {
+        text: '寻找身边的“空气墙”或逻辑漏洞，验证世界的真实性。',
+        score: { lit: 0, weird: 3, sanity: -10 },
+        log: '记录：打破第四面墙的意愿强烈。'
+      },
+      {
+        text: '接受这个设定，并思考作为一个“角色”的宿命悲剧。',
+        score: { lit: 3, weird: 0, sanity: -5 },
+        log: '记录：沉浸于存在主义危机。'
+      },
+      {
+        text: '关掉页面。无聊。',
+        score: { lit: 0, weird: 0, sanity: -50 },
+        log: '错误：连接彻底断开。'
+      }
+    ]
+  }
+];
+
+// --- 主程序 ---
+
+ function BookQualificationTest() {
+  const [phase, setPhase] = _react.useState.call(void 0, 'INTRO'); // INTRO, TEST, RESULT_LIT, RESULT_WEIRD, FAIL
+  const [qIndex, setQIndex] = _react.useState.call(void 0, 0);
+  const [stats, setStats] = _react.useState.call(void 0, { lit: 0, weird: 0, sanity: 100 });
+  const [logs, setLogs] = _react.useState.call(void 0, []);
+  const [isTransitioning, setIsTransitioning] = _react.useState.call(void 0, false);
+
+  // 重置游戏
+  const resetGame = () => {
+    setPhase('INTRO');
+    setQIndex(0);
+    setStats({ lit: 0, weird: 0, sanity: 100 });
+    setLogs([]);
+  };
+
+  // 处理选择
+  const handleChoice = (option) => {
+    setIsTransitioning(true);
+    
+    // 模拟计算延迟
+    setTimeout(() => {
+      const newStats = {
+        lit: stats.lit + option.score.lit,
+        weird: stats.weird + option.score.weird,
+        sanity: stats.sanity + option.score.sanity
+      };
+      
+      setStats(newStats);
+      setLogs(prev => [`[${new Date().toLocaleTimeString().split(' ')[0]}] ${option.log}`, ...prev]);
+
+      // 判定逻辑
+      if (newStats.sanity <= 0) {
+        setPhase('FAIL');
+      } else if (qIndex < SCENARIOS.length - 1) {
+        setQIndex(prev => prev + 1);
+      } else {
+        // 最终结算
+        if (newStats.weird > newStats.lit) {
+          setPhase('RESULT_WEIRD');
+        } else {
+          setPhase('RESULT_LIT');
+        }
+      }
+      setIsTransitioning(false);
+    }, 600);
+  };
+
+  // --- 页面渲染：首页 (INTRO) ---
+  if (phase === 'INTRO') {
+    return (
+      _react2.default.createElement('div', { className: "w-full min-h-[700px] bg-stone-950 text-stone-300 font-sans p-6 md:p-12 flex flex-col relative overflow-hidden border border-stone-800 shadow-2xl"             ,}
+        /* 装饰背景 */
+        , _react2.default.createElement('div', { className: "absolute top-0 right-0 w-64 h-64 bg-red-900/10 blur-[100px] pointer-events-none"       ,})
+        , _react2.default.createElement('div', { className: "absolute bottom-0 left-0 w-64 h-64 bg-cyan-900/10 blur-[100px] pointer-events-none"       ,})
+
+        , _react2.default.createElement('div', { className: "max-w-2xl mx-auto w-full z-10 flex flex-col h-full"      ,}
+          , _react2.default.createElement('header', { className: "mb-12 border-b border-stone-800 pb-6"   ,}
+            , _react2.default.createElement('div', { className: "flex items-center gap-2 text-red-600 mb-2"    ,}
+              , _react2.default.createElement(_lucidereact.AlertTriangle, { size: 20,} )
+              , _react2.default.createElement('span', { className: "text-xs font-mono tracking-widest uppercase"   ,}, "Safety Protocol v7.0"  )
+            )
+            , _react2.default.createElement('h1', { className: "text-4xl md:text-5xl font-black text-stone-100 tracking-tight mb-2"     ,}, "《名字是最短的咒语》"
+
+            )
+            /* 修改点：标题更改 */
+            , _react2.default.createElement('h2', { className: "text-xl md:text-2xl font-serif italic text-stone-500"    ,}, "阅读精神类型"
+
+            )
+          )
+
+          , _react2.default.createElement('main', { className: "flex-1 space-y-8" ,}
+            , _react2.default.createElement('div', { className: "bg-stone-900/50 p-6 rounded border-l-2 border-red-700 backdrop-blur-sm"     ,}
+              , _react2.default.createElement('h3', { className: "font-bold text-stone-100 mb-4 flex items-center gap-2"     ,}
+                , _react2.default.createElement(_lucidereact.Terminal, { size: 18,} ), "试读前安全须知"
+
+              )
+              , _react2.default.createElement('ul', { className: "space-y-3 text-sm md:text-base text-stone-400 leading-relaxed"    ,}
+                , _react2.default.createElement('li', null, "1. 本书不是一本“简单吓你一跳”的恐怖读物，而是一场" , _react2.default.createElement('strong', null, "文本实验"), "。")
+                , _react2.default.createElement('li', null, "2. 包含内容：" , _react2.default.createElement('span', { className: "text-stone-300",}, "宇宙恐怖、模因危害、阈限空间、梦核景观"), "。")
+                , _react2.default.createElement('li', null, "3. 警告：不看规则直接阅读，可能会导致你无法区分书中的后现代精神困境与现实生活。" )
+              )
+            )
+
+            , _react2.default.createElement('div', { className: "space-y-4 text-center py-8"  ,}
+              , _react2.default.createElement('p', { className: "text-sm font-mono text-stone-500"  ,}, "请在脑中确认：“我自愿进入这场文本实验。”"
+
+              )
+              , _react2.default.createElement('button', { 
+                onClick: () => setPhase('TEST'),
+                className: "w-full md:w-auto px-12 py-4 bg-stone-100 text-stone-950 hover:bg-red-600 hover:text-white transition-all duration-300 font-bold tracking-widest flex items-center justify-center gap-3 mx-auto group rounded-sm"                  ,}
+
+                , _react2.default.createElement(_lucidereact.Fingerprint, { className: "group-hover:scale-110 transition-transform" ,} ), "开始测试"
+
+              )
+            )
+          )
+
+          , _react2.default.createElement('footer', { className: "mt-auto text-center text-[10px] text-stone-700 font-mono"    ,}, "© NEW WEIRD LITERARY COLLECTION · SYSTEM READY"
+
+          )
+        )
+      )
+    );
+  }
+
+  // --- 页面渲染：失败 (FAIL) ---
+  if (phase === 'FAIL') {
+    return (
+      _react2.default.createElement('div', { className: "w-full min-h-[700px] bg-black flex flex-col items-center justify-center p-8 text-center border border-stone-800 relative overflow-hidden"            ,}
+        , _react2.default.createElement('div', { className: "absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"   ,})
+        , _react2.default.createElement('div', { className: "z-10 max-w-md" ,}
+          , _react2.default.createElement('div', { className: "text-stone-600 mb-6 animate-pulse"  ,}
+            , _react2.default.createElement(_lucidereact.ScanLine, { size: 64, className: "mx-auto",} )
+          )
+          , _react2.default.createElement('h2', { className: "text-3xl font-bold text-stone-200 mb-4 font-mono"    ,}, "连接断开")
+          , _react2.default.createElement('p', { className: "text-stone-500 mb-8 leading-relaxed"  ,}, "系统判定您的精神防御值（Sanity）过低，或对文本缺乏必要的敬畏。"
+
+            , _react2.default.createElement('br', null), _react2.default.createElement('br', null), "为了保护您的认知安全，书本拒绝向您展示内容。您可能更适合阅读一些轻松的读物，而非这本《名字是最短的咒语》。"
+
+          )
+          , _react2.default.createElement('button', { 
+            onClick: resetGame,
+            className: "text-sm text-stone-400 border-b border-stone-400 hover:text-white hover:border-white transition-colors pb-1 flex items-center gap-2 mx-auto"           ,}
+
+            , _react2.default.createElement(_lucidereact.RefreshCcw, { size: 14,} ), " 重新建立连接"
+          )
+        )
+      )
+    );
+  }
+
+  // --- 页面渲染：测试中 (TEST) ---
+  if (phase === 'TEST') {
+    const scenario = SCENARIOS[qIndex];
+    
+    return (
+      _react2.default.createElement('div', { className: "w-full min-h-[700px] bg-stone-900 text-stone-200 font-sans flex flex-col border border-stone-800 relative"         ,}
+        /* 顶部进度 */
+        , _react2.default.createElement('div', { className: "h-1 bg-stone-800 w-full"  ,}
+          , _react2.default.createElement(_framermotion.motion.div, { 
+            className: "h-full bg-red-600" ,
+            animate: { width: `${((qIndex + 1) / SCENARIOS.length) * 100}%` },}
+          )
+        )
+
+        , _react2.default.createElement('div', { className: "flex-1 p-6 md:p-10 flex flex-col max-w-3xl mx-auto w-full"       ,}
+          /* 状态栏 */
+          , _react2.default.createElement('div', { className: "flex justify-between items-center mb-8 text-xs font-mono text-stone-500"      ,}
+            , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+              , _react2.default.createElement('span', null, "SANITY:")
+              , _react2.default.createElement('div', { className: "w-24 h-2 bg-stone-800 rounded-full overflow-hidden"    ,}
+                , _react2.default.createElement('div', { 
+                  className: `h-full transition-all duration-500 ${stats.sanity > 50 ? 'bg-green-500' : 'bg-red-500'}`,
+                  style: { width: `${stats.sanity}%` },}
+)
+              )
+            )
+            , _react2.default.createElement('span', null, "SCENARIO " , qIndex + 1, " / "  , SCENARIOS.length)
+          )
+
+          /* 问题区域 */
+          , _react2.default.createElement(_framermotion.AnimatePresence, { mode: "wait",}
+            , !isTransitioning && (
+              _react2.default.createElement(_framermotion.motion.div, { 
+                key: qIndex,
+                initial: { opacity: 0, y: 20 },
+                animate: { opacity: 1, y: 0 },
+                exit: { opacity: 0, y: -20 },
+                className: "flex-1 flex flex-col"  ,}
+
+                , _react2.default.createElement('div', { className: "mb-6",}
+                  , _react2.default.createElement('span', { className: "inline-flex items-center gap-2 px-3 py-1 rounded-full border border-stone-700 text-stone-400 text-xs font-bold uppercase tracking-wider mb-4"             ,}
+                    , scenario.icon, " " , scenario.type
+                  )
+                  , _react2.default.createElement('h2', { className: "text-2xl md:text-3xl font-bold text-white mb-4 leading-tight"     ,}
+                    , scenario.question
+                  )
+                  , _react2.default.createElement('p', { className: "text-stone-400 text-base md:text-lg leading-relaxed"   ,}
+                    , scenario.description
+                  )
+                )
+
+                /* 选项区域 - 增加间距防止重叠 */
+                , _react2.default.createElement('div', { className: "grid gap-4 mt-auto pt-8 pb-4"    ,}
+                  , scenario.options.map((opt, idx) => (
+                    _react2.default.createElement('button', {
+                      key: idx,
+                      onClick: () => handleChoice(opt),
+                      className: "text-left p-5 border border-stone-700 bg-stone-800/30 hover:bg-stone-800 hover:border-stone-500 hover:text-white transition-all rounded-lg group relative overflow-hidden"            ,}
+
+                      , _react2.default.createElement('div', { className: "absolute left-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-red-500 transition-colors"       ,})
+                      , _react2.default.createElement('span', { className: "relative z-10 text-sm md:text-base text-stone-300 group-hover:text-white font-medium"      ,}
+                        , opt.text
+                      )
+                    )
+                  ))
+                )
+              )
+            )
+          )
+
+          /* 底部日志 */
+          , _react2.default.createElement('div', { className: "h-20 border-t border-stone-800 mt-4 pt-2 overflow-y-auto font-mono text-[10px] text-stone-600 space-y-1 scrollbar-hide"          ,}
+            , logs.map((log, i) => (
+              _react2.default.createElement('div', { key: i,}, log)
+            ))
+          )
+        )
+      )
+    );
+  }
+
+  // --- 页面渲染：结果 (RESULT) ---
+  const isLit = phase === 'RESULT_LIT';
+  
+  return (
+    _react2.default.createElement('div', { className: `w-full min-h-[700px] p-8 md:p-12 flex flex-col border transition-colors duration-1000 overflow-y-auto ${
+      isLit 
+        ? 'bg-[#e5e5e0] border-stone-400 text-stone-900' 
+        : 'bg-stone-950 border-stone-800 text-stone-200'
+    }`,}
+      , _react2.default.createElement('div', { className: "max-w-2xl mx-auto w-full flex flex-col flex-1"     ,}
+
+        /* 结果头部 */
+        , _react2.default.createElement('div', { className: "mb-10 text-center" ,}
+          , _react2.default.createElement(_framermotion.motion.div, { 
+            initial: { scale: 0.8, opacity: 0 },
+            animate: { scale: 1, opacity: 1 },
+            className: `inline-flex p-4 rounded-full mb-6 border-2 ${
+              isLit ? 'border-stone-900 text-stone-900' : 'border-red-600 text-red-600'
+            }`,}
+
+            , isLit ? _react2.default.createElement(_lucidereact.AlignLeft, { size: 40,} ) : _react2.default.createElement(_lucidereact.Ghost, { size: 40,} )
+          )
+          , _react2.default.createElement('div', { className: "text-xs font-mono uppercase tracking-[0.2em] mb-3 opacity-60"     ,}, "Identity Confirmed"
+
+          )
+          , _react2.default.createElement('h2', { className: "text-4xl font-black mb-2 tracking-tight"   ,}
+            , isLit ? '纯文学读者' : '怪谈爱好者'
+          )
+          , _react2.default.createElement('p', { className: `text-sm font-serif italic ${isLit ? 'text-stone-600' : 'text-stone-500'}`,}
+            , isLit ? 'The Literary Observer' : 'The Anomaly Hunter'
+          )
+        )
+
+        /* 诊断报告 */
+        , _react2.default.createElement('div', { className: `p-8 rounded-xl mb-10 relative overflow-hidden ${
+          isLit 
+            ? 'bg-white border border-stone-300 shadow-sm' 
+            : 'bg-stone-900/50 border border-stone-800'
+        }`,}
+          /* 装饰角标 */
+          , _react2.default.createElement('div', { className: `absolute top-0 right-0 p-2 text-xs font-bold ${isLit ? 'bg-stone-200' : 'bg-red-900 text-white'}`,}, "RESULT"
+
+          )
+
+          , _react2.default.createElement('h3', { className: "font-bold mb-6 flex items-center gap-2 text-sm uppercase tracking-wider border-b border-current/20 pb-2"          ,}
+            , _react2.default.createElement(_lucidereact.Terminal, { size: 14,} ), " 阅读处方"
+          )
+
+          , isLit ? (
+            _react2.default.createElement('div', { className: "space-y-6 text-sm md:text-base leading-relaxed"   ,}
+              , _react2.default.createElement('div', null
+                , _react2.default.createElement('strong', { className: "block mb-1 text-stone-500 text-xs uppercase"    ,}, "推荐路径")
+                , _react2.default.createElement('p', null, "请按", _react2.default.createElement('strong', null, "顺序阅读 (1 → 7)"   ), "。不要跳读。")
+              )
+              , _react2.default.createElement('div', null
+                , _react2.default.createElement('strong', { className: "block mb-1 text-stone-500 text-xs uppercase"    ,}, "精神定位")
+                , _react2.default.createElement('p', null, "假定自己是后现代城市语境的原生居民。书中的疲惫、内卷与冷光，都与你有现实勾联。")
+              )
+              , _react2.default.createElement('div', null
+                , _react2.default.createElement('strong', { className: "block mb-1 text-stone-500 text-xs uppercase"    ,}, "核心任务")
+                , _react2.default.createElement('p', null, "进行精神漫游。不要只看“角色疯掉”，而要确认“自己没有完全清醒”。")
+              )
+            )
+          ) : (
+            _react2.default.createElement('div', { className: "space-y-6 text-sm md:text-base leading-relaxed"   ,}
+              , _react2.default.createElement('div', null
+                , _react2.default.createElement('strong', { className: "block mb-1 text-stone-500 text-xs uppercase"    ,}, "推荐路径")
+                , _react2.default.createElement('p', { className: "text-red-400 font-bold" ,}, _react2.default.createElement(GlitchText, { text: "反向阅读",} ), " (从《后记》开始)" )
+              )
+              , _react2.default.createElement('div', null
+                , _react2.default.createElement('strong', { className: "block mb-1 text-stone-500 text-xs uppercase"    ,}, "精神定位")
+                , _react2.default.createElement('p', null, "把这本书视为一部“纸上密室”或“精神城市地下地图”。后记是你的导航室。")
+              )
+              , _react2.default.createElement('div', null
+                , _react2.default.createElement('strong', { className: "block mb-1 text-stone-500 text-xs uppercase"    ,}, "核心任务")
+                , _react2.default.createElement('p', null, "寻找机关。每一篇“好玩”的背后，都站着一个严肃的问题。别只顾着吓自己。")
+              )
+            )
+          )
+        )
+
+        /* 书籍展示区 */
+        , _react2.default.createElement('div', { className: "mt-auto pt-8 border-t border-dashed border-current/20"    ,}
+          , _react2.default.createElement('div', { className: "flex flex-col md:flex-row items-center md:items-start gap-6"     ,}
+            , _react2.default.createElement('div', { className: `w-24 h-32 shrink-0 flex items-center justify-center border shadow-lg rotate-3 ${
+              isLit ? 'bg-stone-800 text-stone-200' : 'bg-red-900 text-black'
+            }`,}
+              , _react2.default.createElement('span', { className: "font-serif font-bold text-center text-xs p-2"    ,}, "名字是"
+                , _react2.default.createElement('br', null), "最短的", _react2.default.createElement('br', null), "咒语"
+              )
+            )
+            , _react2.default.createElement('div', { className: "text-center md:text-left flex-1"  ,}
+              , _react2.default.createElement('h4', { className: "font-bold text-xl mb-2"  ,}, "《名字是最短的咒语》")
+              , _react2.default.createElement('p', { className: "text-sm opacity-70 mb-4 leading-relaxed"   ,}
+                , isLit 
+                  ? "一部严肃的新怪谈文学作品集。精准描绘后现代语境下城市人群的精神生活。" 
+                  : "七个中短篇怪谈副本 + 一个隐藏在后记中的元叙事诡计。"
+              )
+              , _react2.default.createElement('div', { className: "flex flex-col md:flex-row gap-3 justify-center md:justify-start"     ,}
+                , _react2.default.createElement('button', { className: `px-6 py-3 text-sm font-bold flex items-center justify-center gap-2 transition-all rounded ${
+                  isLit 
+                    ? 'bg-stone-900 text-white hover:bg-stone-700' 
+                    : 'bg-red-700 text-white hover:bg-red-600 shadow-[0_0_15px_rgba(220,38,38,0.4)]'
+                }`,}
+                  , _react2.default.createElement(_lucidereact.BookOpen, { size: 16,} )
+                  , isLit ? '获取完整精神谱系' : '解锁全部怪谈副本'
+                )
+
+                , _react2.default.createElement('button', { 
+                  onClick: resetGame,
+                  className: "px-6 py-3 text-sm font-bold flex items-center justify-center gap-2 border border-current/30 hover:bg-current/5 rounded transition-colors"            ,}
+
+                  , _react2.default.createElement(_lucidereact.RefreshCcw, { size: 16,} ), "重新测试"
+
+                )
+              )
+            )
+          )
+        )
+
+      )
+    )
+  );
+} exports.default = BookQualificationTest;
+</script></head>
+  <body>
+  
+
+<div id="preview-app"></div></body></html>
